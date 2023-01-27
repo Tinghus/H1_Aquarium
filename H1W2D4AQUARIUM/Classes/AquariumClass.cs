@@ -52,6 +52,11 @@ namespace H1W2D4AQUARIUM.Classes
 
             aquarium = GetAquariumDetails(aquariumPos, null);
 
+            if (aquarium == null)
+            {
+                return;
+            }
+
             int numberOfFish = 0;
 
             string outPutFishDetails = "";
@@ -157,7 +162,13 @@ namespace H1W2D4AQUARIUM.Classes
                     }
                 }
             }
-            return AquariumList[aquariumPos ?? 0];
+
+            if (aquariumPos < AquariumList.Count)
+            {
+                return AquariumList[aquariumPos ?? 0];
+            }
+
+            return null;
         }
 
         public void ShowAddAquariumViewModel()
