@@ -13,8 +13,15 @@ namespace H1W2D4AQUARIUM.Classes
         public DataClass Data;
         public AquariumClass Aquarium;
         public List<FishObject> FishList = new List<FishObject>();
+        public List<SpeciesObject> SpeciesList = new List<SpeciesObject>();
+
         public MenuClass Menu;
 
+
+        public void PrepareFishClass()
+        {
+            BuildSpeciesList();
+        }
 
         public void ShowCreateFishViewModel()
         {
@@ -33,8 +40,8 @@ namespace H1W2D4AQUARIUM.Classes
 
             string output =
                 "Name: \n" +
-                "Species: \n" +
-                "Watertype f/s: \n" +
+                "Species:                       (use left and right arrow keys)\n" +
+                "Watertype: \n" +
                 "Aquarium: \n";
 
             Console.WriteLine(output);
@@ -60,8 +67,8 @@ namespace H1W2D4AQUARIUM.Classes
 
             string output =
                 "Name: \n" +
-                "Species: \n" +
-                "Watertype f/s: \n" +
+                "Species:                       (use left and right arrow keys)\n" +
+                "Watertype: \n" +
                 "Aquarium: \n";
 
             Console.WriteLine(output);
@@ -88,38 +95,62 @@ namespace H1W2D4AQUARIUM.Classes
             }
 
             // Species input is valid?. We might want to add a species "selecter" instead
+            int selectedIndex = 0;
             while (true)
             {
+                bool speciesIsSelected = false;
+
+                // Clearing the species line
                 Console.SetCursorPosition(15, startingLine + 1);
-                string input = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(input))
+                Console.Write("                (use left and right arrow keys)");
+
+                // Show the currently selected species
+                Console.SetCursorPosition(15, startingLine + 1);
+                Console.Write(SpeciesList[selectedIndex].SpeciesName);
+
+
+                Console.SetCursorPosition(15, startingLine + 2);
+                Console.Write(SpeciesList[selectedIndex].SpeciesWatertype + "  ");
+
+
+                ConsoleKeyInfo consoleKey;
+
+                Console.CursorVisible = false;
+                consoleKey = Console.ReadKey(true);
+
+                switch (consoleKey.Key)
                 {
-                    if (input.Length > 15)
-                    {
-                        NewFish.Species = input.Substring(0, 15);
-                    }
-                    else
-                    {
-                        NewFish.Species = input;
-                    }
+                    case ConsoleKey.LeftArrow:
+                        if (selectedIndex > 0)
+                        {
+                            selectedIndex--;
+                        }
+                        break;
+
+                    case ConsoleKey.RightArrow:
+                        if (selectedIndex < SpeciesList.Count - 1)
+                        {
+                            selectedIndex++;
+                        }
+                        break;
+
+                    case ConsoleKey.Enter:
+                        speciesIsSelected = true;
+                        NewFish.Species = SpeciesList[selectedIndex].SpeciesName;
+                        break;
+                }
+
+                if (speciesIsSelected)
+                {
+                    Console.CursorVisible = true;
                     break;
                 }
+
             }
 
-            // Watertype input is valid?. We might want to translate input to "Freshwater" and "Saltwater"
-            while (true)
-            {
-                Console.SetCursorPosition(15, startingLine + 2);
-                string input = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(input))
-                {
-                    if (input.ToLower() == "f" || input.ToLower() == "s")
-                    {
-                        NewFish.Watertype = input;
-                    }
-                    break;
-                }
-            }
+            //TODO update watertype to be stored as "Saltwater" and "Freshwater" instead of "f/s"
+            // Watertype
+            NewFish.Watertype = SpeciesList[selectedIndex].SpeciesWatertype[0].ToString().ToLower();
 
             // Aquarium check if input can be converted to int. Then checks if the Aquarium exist
             int aquarium = 0;
@@ -262,6 +293,55 @@ namespace H1W2D4AQUARIUM.Classes
             return nextId;
         }
 
+        public void BuildSpeciesList()
+        {
+            SpeciesList.Add(new SpeciesObject
+            {
+                SpeciesName = "Neon tetra",
+                SpeciesWatertype = "Freshwater",
+                SpeciesSize = 1
+            });
+
+            SpeciesList.Add(new SpeciesObject
+            {
+                SpeciesName = "Guppy",
+                SpeciesWatertype = "Freshwater",
+                SpeciesSize = 2
+            });
+
+
+            SpeciesList.Add(new SpeciesObject
+            {
+                SpeciesName = "Goldfish",
+                SpeciesWatertype = "Freshwater",
+                SpeciesSize = 5
+            });
+
+
+            SpeciesList.Add(new SpeciesObject
+            {
+                SpeciesName = "Clownfish",
+                SpeciesWatertype = "Saltwater",
+                SpeciesSize = 3
+            });
+
+
+            SpeciesList.Add(new SpeciesObject
+            {
+                SpeciesName = "Flame Angelfish",
+                SpeciesWatertype = "Saltwater",
+                SpeciesSize = 4
+            });
+
+            SpeciesList.Add(new SpeciesObject
+            {
+                SpeciesName = "Blue Tang",
+                SpeciesWatertype = "Saltwater",
+                SpeciesSize = 6
+            });
+
+        }
+
         public class FishObject
         {
             public int FishId { get; set; }
@@ -269,6 +349,13 @@ namespace H1W2D4AQUARIUM.Classes
             public int Aquarium { get; set; }
             public string Species { get; set; }
             public string Watertype { get; set; }
+        }
+
+        public class SpeciesObject
+        {
+            public string SpeciesName { get; set; }
+            public string SpeciesWatertype { get; set; }
+            public int SpeciesSize { get; set; }
         }
     }
 }

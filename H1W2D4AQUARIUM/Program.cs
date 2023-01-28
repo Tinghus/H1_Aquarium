@@ -12,6 +12,7 @@ namespace H1W2D4AQUARIUM
         {
             BuildReferences();
             Data.PrepareProgram();
+            Fish.BuildSpeciesList();
 
             Menu.CurrentViewModel = MenuClass.ViewModel.AquariumList;
             Console.CursorVisible = false;
