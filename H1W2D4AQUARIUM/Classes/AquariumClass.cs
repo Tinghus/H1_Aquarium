@@ -26,7 +26,7 @@ namespace H1W2D4AQUARIUM.Classes
                     return "[" + aquarium.AquariumId + "] " + aquarium.Name;
                 }
             }
-            return null;
+            return Convert.ToString(aquariumID);
         }
 
         public bool DoAquariumExist(int aquariumID)
@@ -64,7 +64,7 @@ namespace H1W2D4AQUARIUM.Classes
             // Builds the fish list and prepares it for output. We build it here because we need some of the data for the aquarium info.
             foreach (FishClass.FishObject fish in Fish.FishList)
             {
-                if (fish.Aquarium == aquarium.AquariumId)
+                if (fish.AquariumId == aquarium.AquariumId)
                 {
                     outPutFishDetails += Convert.ToString(fish.FishId).PadRight(5) + fish.Name.PadRight(15) + fish.Species.PadRight(12) + "\n";
                     numberOfFish++;

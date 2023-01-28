@@ -40,9 +40,9 @@ namespace H1W2D4AQUARIUM.Classes
 
             string output =
                 "Name: \n" +
-                "Species:                       (use left and right arrow keys)\n" +
+                "Species:                             (use left and right arrow keys, enter to confirm)\n" +
                 "Watertype: \n" +
-                "Aquarium: \n";
+                "Aquarium:                            (use left and right arrow keys, enter to confirm)\n";
 
             Console.WriteLine(output);
             Console.WriteLine();
@@ -67,9 +67,9 @@ namespace H1W2D4AQUARIUM.Classes
 
             string output =
                 "Name: \n" +
-                "Species:                       (use left and right arrow keys)\n" +
+                "Species:                             (use left and right arrow keys, enter to confirm)\n" +
                 "Watertype: \n" +
-                "Aquarium: \n";
+                "Aquarium:                            (use left and right arrow keys, enter to confirm)\n";
 
             Console.WriteLine(output);
             Console.WriteLine();
@@ -102,7 +102,7 @@ namespace H1W2D4AQUARIUM.Classes
 
                 // Clearing the species line
                 Console.SetCursorPosition(15, startingLine + 1);
-                Console.Write("                (use left and right arrow keys)");
+                Console.Write("                      (use left and right arrow keys, enter to confirm)");
 
                 // Show the currently selected species
                 Console.SetCursorPosition(15, startingLine + 1);
@@ -136,12 +136,12 @@ namespace H1W2D4AQUARIUM.Classes
 
                     case ConsoleKey.Enter:
                         speciesIsSelected = true;
-                        NewFish.Species = SpeciesList[selectedIndex].SpeciesName;
                         break;
                 }
 
                 if (speciesIsSelected)
                 {
+                    NewFish.Species = SpeciesList[selectedIndex].SpeciesName;
                     Console.CursorVisible = true;
                     break;
                 }
@@ -152,24 +152,62 @@ namespace H1W2D4AQUARIUM.Classes
             // Watertype
             NewFish.Watertype = SpeciesList[selectedIndex].SpeciesWatertype[0].ToString().ToLower();
 
-            // Aquarium check if input can be converted to int. Then checks if the Aquarium exist
-            int aquarium = 0;
+            // Aquarium
+            selectedIndex = 0;
             while (true)
             {
+                bool aquariumSelected = false;
+
+                // Clearing the aquarium line
                 Console.SetCursorPosition(15, startingLine + 3);
-                string input = Console.ReadLine();
-                if (!string.IsNullOrWhiteSpace(input))
+                Console.Write("                      (use left and right arrow keys, enter to confirm)");
+
+                // Show the currently selected aquarium
+                Console.SetCursorPosition(15, startingLine + 3);
+
+                Console.ForegroundColor = NewFish.Watertype == Aquarium.AquariumList[selectedIndex].Watertype ? ConsoleColor.DarkGreen : ConsoleColor.Red;
+                Console.Write(Aquarium.AquariumList[selectedIndex].AquariumId + " " + Aquarium.AquariumList[selectedIndex].Name);
+                Console.ForegroundColor = ConsoleColor.Gray;
+
+
+                Console.SetCursorPosition(15, startingLine + 3);
+                ConsoleKeyInfo consoleKey;
+
+                Console.CursorVisible = false;
+                consoleKey = Console.ReadKey(true);
+
+                switch (consoleKey.Key)
                 {
-                    if (int.TryParse(input, out aquarium) && Aquarium.DoAquariumExist(aquarium))
-                    {
-                        NewFish.Aquarium = aquarium;
+                    case ConsoleKey.LeftArrow:
+                        if (selectedIndex > 0)
+                        {
+                            selectedIndex--;
+                        }
                         break;
-                    }
+
+                    case ConsoleKey.RightArrow:
+                        if (selectedIndex < Aquarium.AquariumList.Count - 1)
+                        {
+                            selectedIndex++;
+                        }
+                        break;
+
+                    case ConsoleKey.Enter:
+                        aquariumSelected = true;
+                        break;
                 }
+
+
+                if (aquariumSelected)
+                {
+                    NewFish.AquariumId = Aquarium.AquariumList[selectedIndex].AquariumId;
+                    break;
+                }
+
             }
 
             // Checks to make sure the fish can actually live in the aquarium. We might want to do a size check as well
-            if (NewFish.Watertype == Aquarium.GetAquariumDetails(null, NewFish.Aquarium).Watertype)
+            if (NewFish.Watertype == Aquarium.GetAquariumDetails(null, NewFish.AquariumId).Watertype)
             {
                 NewFish.FishId = FindAvailableId();
                 FishList.Add(NewFish);
@@ -263,7 +301,7 @@ namespace H1W2D4AQUARIUM.Classes
                     Menu.HoverEffect(true);
                 }
 
-                output = Convert.ToString(fish.FishId).PadRight(5) + fish.Name.PadRight(15) + fish.Species.PadRight(12) + Aquarium.GetFriendlyName(fish.Aquarium).PadRight(25) + fish.Watertype;
+                output = Convert.ToString(fish.FishId).PadRight(5) + fish.Name.PadRight(15) + fish.Species.PadRight(12) + Aquarium.GetFriendlyName(fish.AquariumId).PadRight(25) + fish.Watertype;
                 Console.WriteLine(output);
 
                 // Ensures that the hover effect is only applied to the relevant line
@@ -346,7 +384,7 @@ namespace H1W2D4AQUARIUM.Classes
         {
             public int FishId { get; set; }
             public string Name { get; set; }
-            public int Aquarium { get; set; }
+            public int AquariumId { get; set; }
             public string Species { get; set; }
             public string Watertype { get; set; }
         }
