@@ -8,6 +8,7 @@ namespace H1W2D4AQUARIUM
         static FishClass Fish = new FishClass();
         static AquariumClass Aquarium = new AquariumClass();
         static DataClass Data = new DataClass();
+        static UiClass Ui = new UiClass();
         static void Main(string[] args)
         {
             BuildReferences();
@@ -31,18 +32,24 @@ namespace H1W2D4AQUARIUM
             Data.Aquarium = Aquarium;
             Data.Fish = Fish;
 
-            Fish.Aquarium = Aquarium;
-            Fish.Menu = Menu;
-
-            Aquarium.Menu = Menu;
-            Aquarium.Data = Data;
-            Aquarium.Fish = Fish;
-
-            Fish.Data = Data;
             Menu.Data = Data;
-
+            Menu.Ui = Ui;
             Menu.Fish = Fish;
             Menu.Aquarium = Aquarium;
+
+            Ui.Menu = Menu;
+
+            Fish.Data = Data;
+            Fish.Menu = Menu;
+            Fish.Ui = Ui;
+            Fish.Aquarium = Aquarium;
+
+            Aquarium.Data = Data;
+            Aquarium.Menu = Menu;
+            Aquarium.Ui = Ui;
+            Aquarium.Fish = Fish;
+
+
         }
     }
 }

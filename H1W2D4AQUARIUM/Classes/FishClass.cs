@@ -11,6 +11,7 @@ namespace H1W2D4AQUARIUM.Classes
     internal class FishClass
     {
         public DataClass Data;
+        public UiClass Ui;
         public AquariumClass Aquarium;
         public List<FishObject> FishList = new List<FishObject>();
         public List<SpeciesObject> SpeciesList = new List<SpeciesObject>();
@@ -23,7 +24,7 @@ namespace H1W2D4AQUARIUM.Classes
             BuildSpeciesList();
         }
 
-        public void ShowCreateFishViewModel()
+        public void ShowAddFishViewModel()
         {
             // Used as context/sub menu when the Add Fish menu is hovered
             Console.WriteLine("Fish:\n");
@@ -32,23 +33,16 @@ namespace H1W2D4AQUARIUM.Classes
             if (Aquarium.AquariumList.Count == 0)
             {
                 Console.Write("You need to have an aquarium before you can get fish, or they will");
-                Console.ForegroundColor = ConsoleColor.DarkRed;
-                Console.Write(" DIE!!");
-                Console.ForegroundColor = ConsoleColor.Gray;
+                Ui.ChangeTextColor(" DIE!!", ConsoleColor.DarkRed);
                 return;
             }
 
-            string output =
-                "Name: \n" +
-                "Species:                             (use left and right arrow keys, enter to confirm)\n" +
-                "Watertype: \n" +
-                "Aquarium:                            (use left and right arrow keys, enter to confirm)\n";
+            Ui.ApplyViewModel(MenuClass.ViewModel.AddFish);
 
-            Console.WriteLine(output);
             Console.WriteLine();
 
             // Displays an overview over the aquariums
-            Console.Write(Aquarium.ShowAquariumList());
+            Aquarium.ShowAquariumList();
 
         }
 
@@ -65,15 +59,10 @@ namespace H1W2D4AQUARIUM.Classes
             int startingLine = 5;
             Console.SetCursorPosition(0, startingLine);
 
-            string output =
-                "Name: \n" +
-                "Species:                             (use left and right arrow keys, enter to confirm)\n" +
-                "Watertype: \n" +
-                "Aquarium:                            (use left and right arrow keys, enter to confirm)\n";
+            Ui.ApplyViewModel(MenuClass.ViewModel.AddFish);
 
-            Console.WriteLine(output);
             Console.WriteLine();
-            Console.Write(Aquarium.ShowAquariumList());
+            Aquarium.ShowAquariumList();
 
             // Name input is valid?
             while (true)
@@ -165,6 +154,7 @@ namespace H1W2D4AQUARIUM.Classes
                 // Show the currently selected aquarium
                 Console.SetCursorPosition(15, startingLine + 3);
 
+                //TODO move the handling of this to the UiClass
                 Console.ForegroundColor = NewFish.Watertype == Aquarium.AquariumList[selectedIndex].Watertype ? ConsoleColor.DarkGreen : ConsoleColor.Red;
                 Console.Write(Aquarium.AquariumList[selectedIndex].AquariumId + " " + Aquarium.AquariumList[selectedIndex].Name);
                 Console.ForegroundColor = ConsoleColor.Gray;
@@ -197,13 +187,11 @@ namespace H1W2D4AQUARIUM.Classes
                         break;
                 }
 
-
                 if (aquariumSelected)
                 {
                     NewFish.AquariumId = Aquarium.AquariumList[selectedIndex].AquariumId;
                     break;
                 }
-
             }
 
             // Checks to make sure the fish can actually live in the aquarium. We might want to do a size check as well
@@ -219,9 +207,7 @@ namespace H1W2D4AQUARIUM.Classes
             // Mismatched watertype between fish and aquarium
             Console.Clear();
             Console.WriteLine("\nYou put the fish in the wrong tank and it died\n");
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine("YOU MONSTER !!!");
-            Console.ForegroundColor = ConsoleColor.Gray;
+            Ui.ChangeTextColor("YOU MONSTER !!!", Console.ForegroundColor);
             Console.CursorVisible = false;
             Console.ReadKey();
 
@@ -233,13 +219,9 @@ namespace H1W2D4AQUARIUM.Classes
             // Removes the fish
 
             // Warns the user that they are about to delete some data
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine("You are currently trying to delete this item :");
-            Console.ForegroundColor = ConsoleColor.DarkBlue;
-            Console.WriteLine(GetFriendlyName(FishList[fishPos].FishId));
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine("This action cannot be undone. \n are you sure this is what you want to do?");
-            Console.ForegroundColor = ConsoleColor.Gray;
+            Ui.ChangeTextColor("You are currently trying to delete this item :", ConsoleColor.DarkRed);
+            Ui.ChangeTextColor(GetFriendlyName(FishList[fishPos].FishId) + "\n", ConsoleColor.DarkBlue);
+            Ui.ChangeTextColor("This action cannot be undone. \n are you sure this is what you want to do?\n", ConsoleColor.DarkRed);
             Console.WriteLine("y/n");
 
             // Checks for user confirmation
@@ -271,7 +253,7 @@ namespace H1W2D4AQUARIUM.Classes
 
         }
 
-        public string ShowFishList()
+        public void ShowFishList()
         {
             // Writes list of all fish to the console
             // We no longer need a return type as we changed the method from GetFishList to ShowFishList
@@ -281,8 +263,7 @@ namespace H1W2D4AQUARIUM.Classes
             // Before we try to write 
             if (FishList.Count == 0)
             {
-                Console.WriteLine("You got no fish yet :-(");
-                return "";
+                Console.WriteLine("You got no fish yet :-("); ;
             }
 
             Console.WriteLine("Fish:\n");
@@ -295,24 +276,19 @@ namespace H1W2D4AQUARIUM.Classes
             {
                 FishObject fish = FishList[i];
 
+                output = Convert.ToString(fish.FishId).PadRight(5) + fish.Name.PadRight(15) + fish.Species.PadRight(12) + Aquarium.GetFriendlyName(fish.AquariumId).PadRight(25) + fish.Watertype + "\n";
+
                 // Apply the hover effect if the fish is currently selected
                 if (Menu.MenuItemIsActive && Menu.VerticalMenuItemSelected == i)
                 {
-                    Menu.HoverEffect(true);
+                    Ui.ApplyPredefinedEffect(output, UiClass.VisualEffects.HoverEffect);
                 }
-
-                output = Convert.ToString(fish.FishId).PadRight(5) + fish.Name.PadRight(15) + fish.Species.PadRight(12) + Aquarium.GetFriendlyName(fish.AquariumId).PadRight(25) + fish.Watertype;
-                Console.WriteLine(output);
-
-                // Ensures that the hover effect is only applied to the relevant line
-                if (Menu.MenuItemIsActive)
+                else
                 {
-                    Menu.HoverEffect(false);
+                    Console.Write(output);
                 }
-
             }
 
-            return "";
         }
 
         private int FindAvailableId()
