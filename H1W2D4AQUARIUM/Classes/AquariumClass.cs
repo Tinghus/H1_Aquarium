@@ -12,6 +12,7 @@ namespace H1W2D4AQUARIUM.Classes
     {
         public DataClass Data;
         public MenuClass Menu;
+        public UiClass Ui;
         public FishClass Fish;
 
         public List<AquariumObject> AquariumList = new List<AquariumObject>();
@@ -94,7 +95,7 @@ namespace H1W2D4AQUARIUM.Classes
             }
         }
 
-        public string ShowAquariumList()
+        public void ShowAquariumList()
         {
             // Shows a list of all aquariums
 
@@ -102,36 +103,30 @@ namespace H1W2D4AQUARIUM.Classes
 
             if (AquariumList.Count == 0)
             {
-                return "";
+                return;
             }
 
             Console.WriteLine("Aquariums:\n");
 
             output = "Id".PadRight(5) + "Name".PadRight(15) + "Watertype".PadRight(12) + "Temperature".PadRight(14) + "Size";
             Console.WriteLine(output);
-            output = "";
 
             for (int i = 0; i < AquariumList.Count; i++)
             {
                 AquariumObject aquarium = AquariumList[i];
 
+                output = Convert.ToString(aquarium.AquariumId).PadRight(5) + aquarium.Name.PadRight(15) + aquarium.Watertype.PadRight(12) + Convert.ToString(aquarium.temperature).PadRight(14) + Convert.ToString(aquarium.Size) + "\n";
+
                 // Apply hover effect to the selected item
                 if (Menu.MenuItemIsActive && Menu.VerticalMenuItemSelected == i && Menu.CurrentViewModel != MenuClass.ViewModel.AddFish)
                 {
-                    Menu.HoverEffect(true);
+                    Ui.ApplyPredefinedEffect(output, UiClass.VisualEffects.HoverEffect);
                 }
-
-                output = Convert.ToString(aquarium.AquariumId).PadRight(5) + aquarium.Name.PadRight(15) + aquarium.Watertype.PadRight(12) + Convert.ToString(aquarium.temperature).PadRight(14) + Convert.ToString(aquarium.Size);
-                Console.WriteLine(output);
-
-                // Make sure hover effect is not applied to the wrong items
-                if (Menu.MenuItemIsActive)
+                else
                 {
-                    Menu.HoverEffect(false);
+                    Console.Write(output);
                 }
             }
-
-            return "";
         }
 
         private int FindAvailableId()
@@ -150,7 +145,7 @@ namespace H1W2D4AQUARIUM.Classes
 
         public AquariumObject GetAquariumDetails(int? aquariumPos, int? aquariumId)
         {
-            // Returns an AquariumObject based on its position on the list
+            // Returns an AquariumObject based on either its position on the list or its id
 
             if (aquariumPos == null)
             {
@@ -173,17 +168,7 @@ namespace H1W2D4AQUARIUM.Classes
 
         public void ShowAddAquariumViewModel()
         {
-
-            Console.WriteLine("Add new aquarium: \n");
-
-            string output =
-                "Name: \n" +
-                "Size in liters :\n" +
-                "Watertype f/s: \n" +
-                "Temperature (c): \n";
-
-            Console.WriteLine(output);
-
+            Ui.ApplyViewModel(MenuClass.ViewModel.AddAquarium);
         }
 
         public void AddAquarium()
@@ -192,15 +177,7 @@ namespace H1W2D4AQUARIUM.Classes
 
             AquariumObject NewAquarium = new AquariumObject();
 
-            Console.WriteLine("Add new aquarium:\n");
-
-            string output =
-                "Name: \n" +
-                "Size in liters :\n" +
-                "Watertype f/s: \n" +
-                "Temperature (c): \n";
-
-            Console.WriteLine(output);
+            Ui.ApplyViewModel(MenuClass.ViewModel.AddAquarium);
 
             int startingLine = 5;
             int size = 0;
@@ -274,13 +251,9 @@ namespace H1W2D4AQUARIUM.Classes
 
         public void RemoveAquarium(int aquariumPos)
         {
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine("You are currently trying to delete this item :");
-            Console.ForegroundColor = ConsoleColor.DarkBlue;
-            Console.WriteLine(GetFriendlyName(AquariumList[aquariumPos].AquariumId));
-            Console.ForegroundColor = ConsoleColor.DarkRed;
-            Console.WriteLine("This action cannot be undone. \n are you sure this is what you want to do?");
-            Console.ForegroundColor = ConsoleColor.Gray;
+            Ui.ChangeTextColor("You are currently trying to delete this item : \n", ConsoleColor.DarkRed);
+            Ui.ChangeTextColor(GetFriendlyName(AquariumList[aquariumPos].AquariumId) + "\n", ConsoleColor.DarkBlue);
+            Ui.ChangeTextColor("This action cannot be undone. \n are you sure this is what you want to do?\n", ConsoleColor.DarkRed);
             Console.WriteLine("y/n");
 
             bool DeleteThis = Menu.ConfirmAction();
