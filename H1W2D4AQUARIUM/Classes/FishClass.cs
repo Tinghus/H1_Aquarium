@@ -150,7 +150,7 @@ namespace H1W2D4AQUARIUM.Classes
 
             //TODO update watertype to be stored as "Saltwater" and "Freshwater" instead of "f/s"
             // Watertype
-            NewFish.Watertype = SpeciesList[selectedIndex].SpeciesWatertype[0].ToString().ToLower();
+            NewFish.Watertype = SpeciesList[selectedIndex].SpeciesWatertype;
 
             // Aquarium
             selectedIndex = 0;

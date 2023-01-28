@@ -246,7 +246,7 @@ namespace H1W2D4AQUARIUM.Classes
                 {
                     if (input.ToLower() == "f" || input.ToLower() == "s")
                     {
-                        NewAquarium.Watertype = input;
+                        NewAquarium.Watertype = input == "f" ? "Freshwater" : "Saltwater";
                         break;
                     }
                 }
