@@ -123,21 +123,6 @@ namespace H1W2D4AQUARIUM.Classes
 
         }
 
-        public void HoverEffect(bool apply)
-        {
-            // Apply a highlight effect to the currently select menu items
-
-            if (apply)
-            {
-                Console.BackgroundColor = ConsoleColor.Blue;
-                Console.ForegroundColor = ConsoleColor.White;
-                return;
-            }
-
-            Console.BackgroundColor = ConsoleColor.Black;
-            Console.ForegroundColor = ConsoleColor.Gray;
-        }
-
         public void SelectMenuItem()
         {
             // Used for menu navigation

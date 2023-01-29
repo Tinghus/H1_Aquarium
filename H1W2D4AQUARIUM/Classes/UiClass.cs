@@ -114,6 +114,7 @@ namespace H1W2D4AQUARIUM.Classes
             return output;
         }
 
+
         private string ViewModelAddAquarium()
         {
             string output =
@@ -126,10 +127,17 @@ namespace H1W2D4AQUARIUM.Classes
             return output;
         }
 
-        private string ViewModelAquariumDetails()
+        private string ViewModelAquariumDetails(AquariumClass.AquariumObject aquarium)
         {
+            string output =
+                "Id: ".PadRight(17) + aquarium.AquariumId +
+                "\nName: ".PadRight(17) + aquarium.Name +
+                "\nTemperature: ".PadRight(17) + aquarium.temperature.ToString() +
+                "\nSize: ".PadRight(17) + aquarium.Size.ToString() +
+                "\nWatertype: ".PadRight(17) + aquarium.Watertype;
 
-            return "output";
+
+            return output;
         }
 
     }
