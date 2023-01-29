@@ -78,6 +78,7 @@
 
             if (AquariumList.Count == 0)
             {
+                Console.Write("You go no aquariums yet. Go to \"Add Aquarium\" to get started");
                 return;
             }
 
