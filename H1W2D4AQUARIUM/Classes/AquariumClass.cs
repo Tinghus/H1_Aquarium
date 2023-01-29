@@ -72,7 +72,6 @@ namespace H1W2D4AQUARIUM.Classes
                 }
             }
 
-
             // Displays the aquarium details
             string outputAquariumDetails =
                 "Id: ".PadRight(17) + aquarium.AquariumId +
@@ -81,7 +80,6 @@ namespace H1W2D4AQUARIUM.Classes
                 "\nSize: ".PadRight(17) + aquarium.Size.ToString() +
                 "\nWatertype: ".PadRight(17) + aquarium.Watertype +
                 "\nNumber of fish: ".PadRight(17) + numberOfFish.ToString();
-
 
             Console.WriteLine(outputAquariumDetails);
             Console.WriteLine();
@@ -180,8 +178,19 @@ namespace H1W2D4AQUARIUM.Classes
             Ui.ApplyViewModel(MenuClass.ViewModel.AddAquarium);
 
             int startingLine = 5;
-            int size = 0;
 
+            GetAquariumName(NewAquarium, startingLine);
+            GetAquariumSize(NewAquarium, startingLine);
+            GetAquariumWaterType(NewAquarium, startingLine);
+            GetAquariumTemperature(NewAquarium, startingLine);
+
+            NewAquarium.AquariumId = FindAvailableId();
+            AquariumList.Add(NewAquarium);
+            Data.SaveData("aquarium");
+        }
+
+        private void GetAquariumName(AquariumObject NewAquarium, int startingLine)
+        {
             while (true)
             {
                 Console.SetCursorPosition(19, startingLine + 0);
@@ -199,6 +208,11 @@ namespace H1W2D4AQUARIUM.Classes
                     break;
                 }
             }
+        }
+
+        private void GetAquariumSize(AquariumObject NewAquarium, int startingLine)
+        {
+            int size = 0;
 
             while (true)
             {
@@ -213,7 +227,10 @@ namespace H1W2D4AQUARIUM.Classes
                     }
                 }
             }
+        }
 
+        private void GetAquariumWaterType(AquariumObject NewAquarium, int startingLine)
+        {
             string watertype = "";
             while (true)
             {
@@ -228,7 +245,10 @@ namespace H1W2D4AQUARIUM.Classes
                     }
                 }
             }
+        }
 
+        private void GetAquariumTemperature(AquariumObject NewAquarium, int startingLine)
+        {
             double temperature = 0;
             while (true)
             {
@@ -243,10 +263,6 @@ namespace H1W2D4AQUARIUM.Classes
                     }
                 }
             }
-
-            NewAquarium.AquariumId = FindAvailableId();
-            AquariumList.Add(NewAquarium);
-            Data.SaveData("aquarium");
         }
 
         public void RemoveAquarium(int aquariumPos)
@@ -265,8 +281,6 @@ namespace H1W2D4AQUARIUM.Classes
                 Menu.MenuItemIsActive = false;
                 Menu.ShowMenu();
             }
-
-
         }
 
         public class AquariumObject

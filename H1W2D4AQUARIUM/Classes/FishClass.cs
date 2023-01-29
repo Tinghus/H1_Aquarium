@@ -65,6 +65,44 @@ namespace H1W2D4AQUARIUM.Classes
             Aquarium.ShowAquariumList();
 
             // Name input is valid?
+            GetFishName(NewFish, startingLine);
+
+            // Species input is valid?. We might want to add a species "selecter" instead
+            int selectedIndex = SelectSpecies(NewFish, startingLine);
+
+            // Watertype
+            NewFish.Watertype = SpeciesList[selectedIndex].SpeciesWatertype;
+
+            // Aquarium
+            SelectAquarium(NewFish, startingLine);
+
+            // Checks to make sure the fish can actually live in the aquarium. We might want to do a size check as well
+            CheckWaterType(NewFish);
+
+        }
+
+        private void CheckWaterType(FishObject NewFish)
+        {
+            if (NewFish.Watertype == Aquarium.GetAquariumDetails(null, NewFish.AquariumId).Watertype)
+            {
+                NewFish.FishId = FindAvailableId();
+                FishList.Add(NewFish);
+                Data.SaveData("fish");
+                Menu.MenuItemIsActive = false;
+                return;
+            }
+
+            // Mismatched watertype between fish and aquarium
+            Console.Clear();
+            Console.WriteLine("\nYou put the fish in the wrong tank and it died\n");
+            Ui.ChangeTextColor("YOU MONSTER !!!", Console.ForegroundColor);
+            Console.CursorVisible = false;
+            Console.ReadKey();
+
+        }
+
+        private void GetFishName(FishObject NewFish, int startingLine)
+        {
             while (true)
             {
                 Console.SetCursorPosition(15, startingLine + 0);
@@ -82,8 +120,10 @@ namespace H1W2D4AQUARIUM.Classes
                     break;
                 }
             }
+        }
 
-            // Species input is valid?. We might want to add a species "selecter" instead
+        private int SelectSpecies(FishObject NewFish, int startingLine)
+        {
             int selectedIndex = 0;
             while (true)
             {
@@ -137,12 +177,12 @@ namespace H1W2D4AQUARIUM.Classes
 
             }
 
-            //TODO update watertype to be stored as "Saltwater" and "Freshwater" instead of "f/s"
-            // Watertype
-            NewFish.Watertype = SpeciesList[selectedIndex].SpeciesWatertype;
+            return selectedIndex;
+        }
 
-            // Aquarium
-            selectedIndex = 0;
+        private void SelectAquarium(FishObject NewFish, int startingLine)
+        {
+            int selectedIndex = 0;
             while (true)
             {
                 bool aquariumSelected = false;
@@ -193,25 +233,6 @@ namespace H1W2D4AQUARIUM.Classes
                     break;
                 }
             }
-
-            // Checks to make sure the fish can actually live in the aquarium. We might want to do a size check as well
-            if (NewFish.Watertype == Aquarium.GetAquariumDetails(null, NewFish.AquariumId).Watertype)
-            {
-                NewFish.FishId = FindAvailableId();
-                FishList.Add(NewFish);
-                Data.SaveData("fish");
-                Menu.MenuItemIsActive = false;
-                return;
-            }
-
-            // Mismatched watertype between fish and aquarium
-            Console.Clear();
-            Console.WriteLine("\nYou put the fish in the wrong tank and it died\n");
-            Ui.ChangeTextColor("YOU MONSTER !!!", Console.ForegroundColor);
-            Console.CursorVisible = false;
-            Console.ReadKey();
-
-
         }
 
         public void RemoveFish(int fishPos)
