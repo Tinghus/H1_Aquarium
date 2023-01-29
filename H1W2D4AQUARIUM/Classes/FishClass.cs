@@ -1,28 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static H1W2D4AQUARIUM.Classes.AquariumClass;
-using static System.Collections.Specialized.BitVector32;
-
-namespace H1W2D4AQUARIUM.Classes
+﻿namespace H1W2D4AQUARIUM.Classes
 {
     internal class FishClass
     {
         public DataClass Data;
+        public MenuClass Menu;
         public UiClass Ui;
         public AquariumClass Aquarium;
+
         public List<FishObject> FishList = new List<FishObject>();
         public List<SpeciesObject> SpeciesList = new List<SpeciesObject>();
-
-        public MenuClass Menu;
-
-
-        public void PrepareFishClass()
-        {
-            BuildSpeciesList();
-        }
 
         public void ShowAddFishViewModel()
         {
@@ -43,7 +29,6 @@ namespace H1W2D4AQUARIUM.Classes
 
             // Displays an overview over the aquariums
             Aquarium.ShowAquariumList();
-
         }
 
         public void AddFish()
@@ -78,7 +63,6 @@ namespace H1W2D4AQUARIUM.Classes
 
             // Checks to make sure the fish can actually live in the aquarium. We might want to do a size check as well
             CheckWaterType(NewFish);
-
         }
 
         private void CheckWaterType(FishObject NewFish)
@@ -98,7 +82,6 @@ namespace H1W2D4AQUARIUM.Classes
             Ui.ChangeTextColor("YOU MONSTER !!!", Console.ForegroundColor);
             Console.CursorVisible = false;
             Console.ReadKey();
-
         }
 
         private void GetFishName(FishObject NewFish, int startingLine)
@@ -256,7 +239,6 @@ namespace H1W2D4AQUARIUM.Classes
                 Menu.MenuItemIsActive = false;
                 Menu.ShowMenu();
             }
-
         }
 
         public string GetFriendlyName(int id)
@@ -271,7 +253,6 @@ namespace H1W2D4AQUARIUM.Classes
                 }
             }
             return null;
-
         }
 
         public void ShowFishList()
@@ -309,7 +290,6 @@ namespace H1W2D4AQUARIUM.Classes
                     Console.Write(output);
                 }
             }
-
         }
 
         private int FindAvailableId()
@@ -374,7 +354,6 @@ namespace H1W2D4AQUARIUM.Classes
                 SpeciesWatertype = "Saltwater",
                 SpeciesSize = 6
             });
-
         }
 
         public class FishObject

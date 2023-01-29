@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Headers;
-using System.Security;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace H1W2D4AQUARIUM.Classes
+﻿namespace H1W2D4AQUARIUM.Classes
 {
     internal class MenuClass
     {
@@ -21,7 +13,7 @@ namespace H1W2D4AQUARIUM.Classes
 
         public bool MenuItemIsActive = false; // Keeps track of wether or not we are inside a sub menu
 
-        string[] menuItems = new string[] { "Show Aquariums", "Show Fish", "Add Aquarium", "Remove Aquarium", "Add Fish", "Remove Fish", "Exit" };
+        private string[] menuItems = new string[] { "Show Aquariums", "Show Fish", "Add Aquarium", "Remove Aquarium", "Add Fish", "Remove Fish", "Exit" };
 
         public void ShowMenu()
         {
@@ -62,7 +54,6 @@ namespace H1W2D4AQUARIUM.Classes
             Console.SetCursorPosition(0, 3);
 
             LoadViewModel(CurrentViewModel);
-
         }
 
 
@@ -117,10 +108,7 @@ namespace H1W2D4AQUARIUM.Classes
                 case ViewModel.RemoveAquarium:
                     Aquarium.ShowAquariumList();
                     return;
-
             }
-
-
         }
 
         public void SelectMenuItem()
@@ -171,8 +159,6 @@ namespace H1W2D4AQUARIUM.Classes
                 default:
                     break;
             }
-
-
         }
 
         private void PressEnterOnActiveMenu()
@@ -362,6 +348,5 @@ namespace H1W2D4AQUARIUM.Classes
             RemoveAquarium,
             Exit
         }
-
     }
 }

@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace H1W2D4AQUARIUM.Classes
+﻿namespace H1W2D4AQUARIUM.Classes
 {
     internal class AquariumClass
     {
@@ -28,21 +20,6 @@ namespace H1W2D4AQUARIUM.Classes
                 }
             }
             return Convert.ToString(aquariumID);
-        }
-
-        public bool DoAquariumExist(int aquariumID)
-        {
-            // Check to see if the aquarium exists. Used in AddFish.
-
-            foreach (AquariumObject aquarium in AquariumList)
-            {
-                if (aquarium.AquariumId == aquariumID)
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         public void ShowAquariumDetails(int aquariumPos)
@@ -231,7 +208,6 @@ namespace H1W2D4AQUARIUM.Classes
 
         private void GetAquariumWaterType(AquariumObject NewAquarium, int startingLine)
         {
-            string watertype = "";
             while (true)
             {
                 Console.SetCursorPosition(19, startingLine + 2);

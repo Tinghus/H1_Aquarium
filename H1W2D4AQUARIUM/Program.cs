@@ -4,12 +4,13 @@ namespace H1W2D4AQUARIUM
 {
     internal class Program
     {
-        static MenuClass Menu = new MenuClass();
-        static FishClass Fish = new FishClass();
-        static AquariumClass Aquarium = new AquariumClass();
-        static DataClass Data = new DataClass();
-        static UiClass Ui = new UiClass();
-        static void Main(string[] args)
+        private static MenuClass Menu = new MenuClass();
+        private static FishClass Fish = new FishClass();
+        private static AquariumClass Aquarium = new AquariumClass();
+        private static DataClass Data = new DataClass();
+        private static UiClass Ui = new UiClass();
+
+        private static void Main(string[] args)
         {
             BuildReferences();
             Data.PrepareProgram();
@@ -23,7 +24,6 @@ namespace H1W2D4AQUARIUM
                 Menu.ShowMenu();
                 Menu.SelectMenuItem();
             }
-
         }
 
         private static void BuildReferences()
@@ -48,8 +48,6 @@ namespace H1W2D4AQUARIUM
             Aquarium.Menu = Menu;
             Aquarium.Ui = Ui;
             Aquarium.Fish = Fish;
-
-
         }
     }
 }

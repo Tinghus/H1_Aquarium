@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Text.Json;
+﻿using System.Text.Json;
 namespace H1W2D4AQUARIUM.Classes
 {
     internal class DataClass
@@ -56,15 +51,10 @@ namespace H1W2D4AQUARIUM.Classes
             {
                 Fish.FishList = JsonSerializer.Deserialize<List<FishClass.FishObject>>(jsonData);
             }
-
         }
 
         public void SaveData(string arg)
         {
-            // Saves data based on the passed in arguments as we only want to update the files if they have changes
-
-            string jsonData;
-
             if (arg == "all" || arg == "fish")
             {
                 SaveFish();

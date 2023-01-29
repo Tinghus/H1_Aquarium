@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace H1W2D4AQUARIUM.Classes
+﻿namespace H1W2D4AQUARIUM.Classes
 {
     internal class UiClass
     {
